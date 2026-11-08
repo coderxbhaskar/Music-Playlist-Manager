@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Looplist – Playlist manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo"><i data-icon="music" data-size="20"></i></div>
+        <div><strong>Looplist</strong><small>Playlist manager</small></div>
+      </div>
+
+      <div class="nav-label">WORKSPACE</div>
+      <nav>
+        <button class="nav-item" data-view="overview"><i data-icon="grid"></i><span>Overview</span></button>
+        <button class="nav-item" data-view="playlist"><i data-icon="list"></i><span>Playlist</span><em class="badge" id="navCount">0</em></button>
+        <button class="nav-item" data-view="queue"><i data-icon="queue"></i><span>Queue</span></button>
+        <button class="nav-item" data-view="favorites"><i data-icon="heart"></i><span>Favorites</span></button>
+      </nav>
+
+      <div class="nav-label">LIBRARY</div>
+      <nav>
+        <button class="nav-item" data-view="artists"><i data-icon="users"></i><span>Artists</span></button>
+        <button class="nav-item" data-view="albums"><i data-icon="disc"></i><span>Albums</span></button>
+      </nav>
+
+      <div class="storage">
+        <div class="storage-head"><span>Storage</span><button class="icon-btn" id="storageMenuBtn" data-menu="storage" title="Options"><i data-icon="more"></i></button></div>
+        <div class="bar"><div id="storageBar"></div></div>
+        <p id="storageText">0 songs in this playlist</p>
+      </div>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <div class="main">
+      <header class="topbar">
+        <div>
+          <div class="crumb" id="crumb">Workspace / Playlist</div>
+          <h1>Your playlist</h1>
+        </div>
+        <div class="top-actions">
+          <label class="search">
+            <i data-icon="search"></i>
+            <input id="searchInput" type="search" placeholder="Search songs, artists…" autocomplete="off" />
+          </label>
+          <button class="icon-btn" id="bellBtn" title="Notifications"><i data-icon="bell"></i></button>
+          <div class="avatar">ME</div>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="top-row">
+          <!-- Hero -->
+          <section class="card hero">
+            <div class="hero-art" id="heroArt">
+              <span class="chip">ACTIVE PLAYLIST</span>
+              <h2 id="playlistName" title="Click to rename">Night drive essentials</h2>
+              <p>A focused collection for late hours, empty roads, and the city lights in your rearview.</p>
+              <div class="hero-actions">
+                <button class="btn btn-primary" id="playAllBtn"><i data-icon="play"></i> Play all</button>
+                <button class="btn btn-ghost" id="heroAddBtn"><i data-icon="plus"></i> Add song</button>
+              </div>
+            </div>
+            <div class="stats">
+              <div><small>Total tracks</small><strong id="statTracks">0</strong></div>
+              <div><small>Total duration</small><strong id="statDuration">0m 0s</strong></div>
+              <div><small>Last updated</small><strong id="statUpdated">Today</strong></div>
+            </div>
+          </section>
+
+          <!-- Now playing -->
+          <section class="card now" id="nowCard"></section>
+        </div>
+
+        <!-- Tracks -->
+        <section class="card tracks">
+          <div class="tracks-head">
+            <h3 id="tracksTitle">Playlist tracks</h3>
+            <p id="tracksSub">Manage the songs in your circular linked list.</p>
+            <div class="actions">
+              <button class="btn btn-ghost btn-sm" id="filterBtn"><i data-icon="filter"></i> Filter</button>
+              <button class="btn btn-primary btn-sm" id="addBtn"><i data-icon="plus"></i> Add song</button>
+              <button class="btn btn-ghost btn-sm" id="removeBtn"><i data-icon="trash"></i> Remove song</button>
+            </div>
+          </div>
+          <div id="tracksBody"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add song dialog -->
+  <dialog id="addDialog">
+    <form id="addForm" autocomplete="off">
+      <h3>Add a song</h3>
+      <div class="grid2">
+        <label>Song ID<input id="fId" required /></label>
+        <label>Duration (m:ss)<input id="fDur" placeholder="3:45" pattern="\d{1,3}:[0-5]\d" title="Format m:ss, e.g. 3:45" required /></label>
+      </div>
+      <label>Title<input id="fTitle" required /></label>
+      <label>Artist<input id="fArtist" required /></label>
+      <label>Album<input id="fAlbum" placeholder="Optional" /></label>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Add to playlist</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Remove dialog -->
+  <dialog id="removeDialog">
+    <form id="removeForm" autocomplete="off">
+      <h3>Remove a song</h3>
+      <p class="muted">Enter the song ID or title.</p>
+      <label>Song ID or title<input id="rQuery" required /></label>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+        <button type="submit" class="btn btn-danger">Remove</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="menu" class="menu" hidden></div>
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="circularList.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
